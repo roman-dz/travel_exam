@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <title>Travel Dashboard</title>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="page_header">
+            <p>Welcome, {{request.session.greeting}}</p> 
+            <span><a href="{{request.META.HTTP_REFERER}}">Back</a> | <a class="logout" href="/logout">Logout</a></span>
+        </div>
+        <div class="all_plans"> 
+            <div>
+                <h1>Your Trip Schedule</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Plan Name</th>
+                            <th>Travel Start Date</th>
+                            <th>Travel End Date</th>
+                            <th>Plan Description</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for plan in all_plans %}
+                            {% if this_user in plan.joined_by.all %}
+                        <tr>
+                            <td><a href="/travel/{{plan.id}}">{{plan.destination}}</a></td>
+                            <td>{{plan.date_from}}</td>
+                            <td>{{plan.date_to}}</td>
+                            <td>{{plan.description}}</td>
+                            <td><a href="/unjoined/{{plan.id}}">Cancel</a> | 
+                            {% if plan.creator.id == request.session.user_id %}
+                            <a href="/travel/{{plan.id}}/delete">Delete</a><br>
+                            {% endif %}
+                            </td>
+                        </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+                
+                <h1>Others User's Available Travel Plans</h1>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Plan Name</th>
+                            <th>Travel Start Date</th>
+                            <th>Travel End Date</th>
+                            <th>Do You Want to Join?</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for plan in all_plans %}
+                        {% if plan.joined_by.all.count == 0 %}
+                        <tr>
+                            <td><a href="/travel/{{plan.id}}">{{plan.destination}}</a></td>
+                            <td>{{plan.date_from}}</td>
+                            <td>{{plan.date_to}}</td>
+                            <td>
+                                {% if current_user not in plan.joined_by.all %}
+                                    <a href="/joined/{{plan.id}}">Join</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endif %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

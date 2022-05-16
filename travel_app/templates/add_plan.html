@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <title>Add a Plan</title>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="page_header">
+            <p>Welcome, {{request.session.greeting}}</p> 
+            <span><a href="{{request.META.HTTP_REFERER}}">Back</a> | <a class="logout" href="/logout">Logout</a></span>
+        </div>
+        <div class="all_plans">
+            <div class="form">
+                <h2>Add a New Travel Plan</h2>
+                <!-- START error messages -->
+                <ul class="message">
+                    {% if messages %}
+                    <p>Please fix the following issues to proceed:</p>
+                        {% for message in messages %}
+                        <li>{{ message }}</li>
+                            <!-- <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li> -->
+                        {% endfor %}
+                    {% endif %}
+                </ul>
+                <!-- END Error messages -->
+                <form action="/travel/create" method="post">
+                    {% csrf_token %}
+                    <div>
+                        <label for="destination">Destination</label>
+                        <div>
+                            <input type="text" name="destination">
+                        </div>
+                    </div>
+                    <div>
+                        <label for="description">Plan Description</label>
+                        <div>
+                           <textarea name="description" placeholder="Remember to describe your plan..." rows="10" cols="30"></textarea>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="date_from">Travel Date From</label>
+                        <div>
+                            <input type="date" name="date_from">
+                        </div>
+                    </div>
+                    <div>
+                        <label for="date_to">Travel Date To</label>
+                        <div>
+                            <input type="date" name="date_to">
+                        </div>
+                    </div>
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <title>Your Travel Plan</title>
+</head>
+<body>
+    <div class="page_header">
+        <p>Welcome, {{request.session.greeting}}</p> 
+        <span><a href="{{request.META.HTTP_REFERER}}">Back</a> | <a class="logout" href="/logout">Logout</a></span>
+    </div>
+
+    <div class="all_plans">
+        <div>
+            <h1>{{plan.destination}}</h1>
+                <p>Planned By: {{plan.creator.first_name}} {{plan.creator.last_name}}</p>
+                    <p>Plan Description: {{plan.description}}</p>
+                    <p>Travel Date From: {{plan.date_from}}</p>
+                    <p>Travel Date To: {{plan.date_to}}</p>
+            
+                <h1>Other Users Joining The Trip</h1>
+                    {% for user in plan.joined_by.all %}
+                        {% if current_user.id == plan.creator.id %}
+                            <p>I'm the creator</p>
+                        {% else %}
+                            {{current_user.first_name}} {{current_user.last_name}} didn't create but joined the trip
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+        </div>
+    </div>
+</body>
+</html>

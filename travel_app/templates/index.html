@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <title>Register OR Login</title>
+</head>
+<body>
+    <div class="wrapper">
+        <h1>Travel Website Access</h1>
+        <div>
+            <!-- START error messages -->
+            <ul class="message">
+            {% if messages %}
+            <p>Please fix the following issues to proceed:</p>
+                {% for message in messages %}
+                <li>{{ message }}</li>
+                    <!-- <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li> -->
+                {% endfor %}
+            {% endif %}
+            </ul>
+            <!-- END Error messages -->
+        </div>
+        <div class="main_reg_log_container">
+            <div class="form">
+                <h2>Register</h2>
+                <form action="/register" method="POST">
+                    {% csrf_token %}
+                    <div>
+                        <label for="first_name">First Name</label>
+                        <div>
+                            <input class="input" type="text" name="first_name">
+                            </ul>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="last_name">Last Name</label>
+                        <div>
+                            <input class="input" type="text" name="last_name">
+                            </ul>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="email">Email</label>
+                        <div>
+                            <input class="input" type="text" name="email">
+                            </ul>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="password">Password</label>
+                        <div>
+                            <input class="input" type="password" name="password">
+                            </ul>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="confirm_password">Confirm Password</label>
+                        <div>
+                            <input class="input" type="password" name="confirm_password">
+                        </div>
+                    </div>
+                    <button type="submit">Register</button>
+                </form>
+            </div>
+            <div class="form">
+                <h2>Login</h2>
+                <form action="/login" method="POST">
+                    {% csrf_token %}
+                    <div>
+                        <label for="email">Email</label>
+                        <div>
+                            <input type="text" name="login_email">
+                            </ul>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="password">Password</label>
+                        <div>
+                            <input type="password" name="login_password">
+                            </ul>
+                        </div>
+                    </div>
+                    <button type="submit">Login</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
